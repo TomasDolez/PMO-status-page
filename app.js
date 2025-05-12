@@ -12,12 +12,16 @@ async function fetchServices() {
         let services = await servicesRes.json();
         const timelineEntries = await timelineRes.json();
 
-        // Attach timeline to each service
         services.forEach(service => {
+            // Attach matching timeline entries
             service.timeline = timelineEntries
                 .filter(t => t.serviceId === service.id)
                 .sort((a, b) => new Date(b.time) - new Date(a.time));
 
+            // Auto-calculate outages
+            service.totalOutages = service.timeline.filter(t => t.status === 'outage' || t.status === 'partial-outage').length;
+
+            // Auto-calculate last incident
             service.lastIncident = getLastIncident(service.timeline);
         });
 
@@ -29,11 +33,8 @@ async function fetchServices() {
     }
 }
 
-
-
 function getLastIncident(timeline) {
     if (!Array.isArray(timeline) || timeline.length === 0) return 'N/A';
-
     const incidentDates = timeline
         .filter(item => item.status !== 'operational')
         .map(item => new Date(item.time))
@@ -47,81 +48,63 @@ function getLastIncident(timeline) {
 }
 
 function renderStatusCards(services) {
-    const statusGrid = document.getElementById('status-grid');
-    statusGrid.innerHTML = '';
+    const grid = document.getElementById('status-grid');
+    grid.innerHTML = '';
+
     services.forEach(service => {
         const card = document.createElement('div');
         card.className = 'status-card';
-        card.dataset.id = service.id;
 
         card.innerHTML = `
-            <h3>
-                ${service.name}
+            <h3>${service.name}
                 <span class="status-text status-${service.status}">${service.statusText}</span>
             </h3>
             <div class="status-details">${service.details}</div>
+            <div class="status-extra">🔁 Total Outages: ${service.totalOutages}</div>
         `;
 
-        card.addEventListener('click', () => showServiceDetails(service));
-        statusGrid.appendChild(card);
+        card.onclick = () => showServiceDetails(service);
+        grid.appendChild(card);
     });
 }
 
 function showServiceDetails(service) {
     document.getElementById('modal-title').textContent = service.name;
     document.getElementById('modal-status-message').textContent = service.details;
-    const indicator = document.getElementById('modal-indicator');
-    indicator.className = 'status-indicator indicator-' + service.status;
+    document.getElementById('modal-indicator').className = 'status-indicator indicator-' + service.status;
 
     const timeline = document.getElementById('modal-timeline');
     timeline.innerHTML = '';
 
     service.timeline.forEach(item => {
-        const timelineItem = document.createElement('div');
-        timelineItem.className = 'timeline-item';
-
-        let iconColor = 'var(--color-neutral)';
-        switch (item.status) {
-            case 'operational': iconColor = 'var(--color-success)'; break;
-            case 'degraded': iconColor = 'var(--color-warning)'; break;
-            case 'outage': iconColor = 'var(--color-danger)'; break;
-            case 'maintenance': iconColor = 'var(--color-neutral)'; break;
-        }
-
-        timelineItem.innerHTML = `
-            <div class="timeline-icon" style="background-color: ${iconColor}"></div>
+        const el = document.createElement('div');
+        el.className = 'timeline-item';
+        el.innerHTML = `
+            <div class="timeline-icon" style="background-color: var(--color-${item.status || 'neutral'})"></div>
             <div class="timeline-content">
                 <div class="timeline-time">${new Date(item.time).toLocaleString()}</div>
                 <div class="timeline-text">${item.text}</div>
             </div>
         `;
-
-        timeline.appendChild(timelineItem);
+        timeline.appendChild(el);
     });
 
     document.getElementById('modal-backdrop').classList.add('active');
 }
 
-document.getElementById('modal-close').addEventListener('click', () => {
+document.getElementById('modal-close').onclick = () => {
     document.getElementById('modal-backdrop').classList.remove('active');
-});
+};
 
-document.getElementById('modal-backdrop').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('modal-backdrop')) {
+document.getElementById('modal-backdrop').onclick = e => {
+    if (e.target.id === 'modal-backdrop') {
         document.getElementById('modal-backdrop').classList.remove('active');
     }
-});
+};
 
 function updateTime() {
     const now = new Date();
-    const options = { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit' 
-    };
-    document.getElementById('update-time').textContent = now.toLocaleDateString('en-US', options);
+    document.getElementById('update-time').textContent = now.toLocaleString();
 }
 
 document.addEventListener('DOMContentLoaded', fetchServices);

@@ -1,7 +1,10 @@
 :root {
             --color-success: #10b981;
+            --color-operational: #10b981;
             --color-warning: #f59e0b;
+            --color-partial-outage: #f59e0b;
             --color-danger: #ef4444;
+            --color-outage: #ef4444;
             --color-neutral: #6b7280;
         }
 
@@ -84,6 +87,35 @@
             margin-right: 0.5rem;
         }
 
+        .status-extra {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.timeline-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: 0.3rem;
+}
+.timeline-content {
+    flex-grow: 1;
+}
+.timeline-time {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+}
+.timeline-text {
+    font-size: 0.9rem;
+}
         .status-text {
             font-size: 0.875rem;
             font-weight: 500;
@@ -306,31 +338,4 @@
         .stat-value {
             font-size: 1.25rem;
             font-weight: 600;
-        }
-
-        .graph {
-            width: 100%;
-            height: 150px;
-            margin-top: 1rem;
-            position: relative;
-        }
-
-        .graph-line {
-            stroke: #3b82f6;
-            stroke-width: 2;
-            fill: none;
-        }
-
-        .graph-area {
-            fill: rgba(59, 130, 246, 0.1);
-        }
-
-        .graph-axis {
-            stroke: #e5e7eb;
-            stroke-width: 1;
-        }
-
-        .graph-label {
-            font-size: 0.75rem;
-            fill: #6b7280;
         }
