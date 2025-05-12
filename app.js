@@ -1,21 +1,26 @@
 const sheetID = '1jt-m4j6801xuhEqKIHoY_GWnLX9YGlfLUuq43SOQ9Qk';
-const url = `https://opensheet.elk.sh/${sheetID}/Sheet1`;
-
+const servicesURL = `https://opensheet.elk.sh/${sheetID}/Services`;
+const timelineURL = `https://opensheet.elk.sh/${sheetID}/Timeline`;
 
 async function fetchServices() {
     try {
-        const res = await fetch(url);
-        let services = await res.json();
+        const [servicesRes, timelineRes] = await Promise.all([
+            fetch(servicesURL),
+            fetch(timelineURL)
+        ]);
 
+        let services = await servicesRes.json();
+        const timelineEntries = await timelineRes.json();
+
+        // Attach timeline to each service
         services.forEach(service => {
-            try {
-                service.timeline = JSON.parse(service.timeline || '[]');
-            } catch {
-                service.timeline = [];
-            }
+            service.timeline = timelineEntries
+                .filter(t => t.serviceId === service.id)
+                .sort((a, b) => new Date(b.time) - new Date(a.time));
+
             service.lastIncident = getLastIncident(service.timeline);
         });
-        console.log('Fetched services:', services);
+
         renderStatusCards(services);
         updateTime();
     } catch (err) {
@@ -23,6 +28,7 @@ async function fetchServices() {
         alert("Failed to load service data.");
     }
 }
+
 
 
 function getLastIncident(timeline) {
