@@ -1,12 +1,9 @@
 :root {
-            --color-success: #10b981;
-            --color-operational: #10b981;
-            --color-warning: #f59e0b;
-            --color-partial-outage: #f59e0b;
-            --color-danger: #ef4444;
-            --color-outage: #ef4444;
-            --color-neutral: #6b7280;
-        }
+    --color-operational: #10b981;    /* Green */
+    --color-partial:     #f59e0b;    /* Orange */
+    --color-outage:      #ef4444;    /* Red */
+    --color-neutral:     #6b7280;    /* Gray fallback */
+}
 
         * {
             margin: 0;
@@ -51,7 +48,7 @@
 
         .status-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1rem;
         }
 
@@ -120,30 +117,29 @@
             font-size: 0.875rem;
             font-weight: 500;
         }
-
         .status-operational {
-            color: var(--color-success);
+            color: var(--color-operational);
         }
-        .status-degraded {
-            color: var(--color-warning);
+        .status-partial {
+            color: var(--color-partial);
         }
         .status-outage {
-            color: var(--color-danger);
+            color: var(--color-outage);
         }
-        .status-maintenance {
+        .status-unknown {
             color: var(--color-neutral);
         }
-
+        
         .indicator-operational {
-            background-color: var(--color-success);
+            background-color: var(--color-operational);
         }
-        .indicator-degraded {
-            background-color: var(--color-warning);
+        .indicator-partial\\ Outage {
+            background-color: var(--color-partial);
         }
         .indicator-outage {
-            background-color: var(--color-danger);
+            background-color: var(--color-outage);
         }
-        .indicator-maintenance {
+        .indicator-unknown {
             background-color: var(--color-neutral);
         }
 

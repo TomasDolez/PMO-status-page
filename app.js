@@ -13,15 +13,16 @@ async function fetchServices() {
         const timelineEntries = await timelineRes.json();
 
         services.forEach(service => {
-            // Attach matching timeline entries
+            console.log(service.timeline)
             service.timeline = timelineEntries
                 .filter(t => t.serviceId === service.id)
                 .sort((a, b) => new Date(b.time) - new Date(a.time));
 
-            // Auto-calculate outages
-            service.totalOutages = service.timeline.filter(t => t.status === 'outage' || t.status === 'partial-outage').length;
+            // Count both full and partial outages
+            service.totalOutages = service.timeline.filter(t =>
+                t.status === 'Outage' || t.status === 'Partial Outage'
+            ).length;
 
-            // Auto-calculate last incident
             service.lastIncident = getLastIncident(service.timeline);
         });
 
@@ -33,10 +34,34 @@ async function fetchServices() {
     }
 }
 
+function getStatusColor(status) {
+    console.log(status)
+    switch (status) {
+        case 'operational':
+            return 'var(--color-operational)';
+        case 'partial':
+            return 'var(--color-partial)';
+        case 'outage':
+            return 'var(--color-outage)';
+        default:
+            return 'var(--color-neutral)';
+    }
+}
+
+function formatDateOnly(date) {
+    const d = new Date(date);
+    return d.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
 function getLastIncident(timeline) {
     if (!Array.isArray(timeline) || timeline.length === 0) return 'N/A';
+
     const incidentDates = timeline
-        .filter(item => item.status !== 'operational')
+        .filter(item => item.status !== 'Operational')
         .map(item => new Date(item.time))
         .sort((a, b) => b - a);
 
@@ -79,10 +104,11 @@ function showServiceDetails(service) {
     service.timeline.forEach(item => {
         const el = document.createElement('div');
         el.className = 'timeline-item';
+        const iconColor = getStatusColor(item.status);
         el.innerHTML = `
-            <div class="timeline-icon" style="background-color: var(--color-${item.status || 'neutral'})"></div>
+            <div class="timeline-icon" style="background-color: ${iconColor}"></div>
             <div class="timeline-content">
-                <div class="timeline-time">${new Date(item.time).toLocaleString()}</div>
+                <div class="timeline-time">${formatDateOnly(item.time)}</div>
                 <div class="timeline-text">${item.text}</div>
             </div>
         `;
@@ -104,7 +130,16 @@ document.getElementById('modal-backdrop').onclick = e => {
 
 function updateTime() {
     const now = new Date();
-    document.getElementById('update-time').textContent = now.toLocaleString();
+    const options = {
+        year: 'numeric',
+        month: 'long', // 👈 This gives "May"
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    };
+    document.getElementById('update-time').textContent = now.toLocaleString('en-US', options);
 }
+
 
 document.addEventListener('DOMContentLoaded', fetchServices);
