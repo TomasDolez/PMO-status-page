@@ -76,14 +76,15 @@ h1 {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	flex-wrap: nowrap; /* 👈 this prevents wrapping */
+	gap: 0.5rem;
 }
 
 .status-indicator {
-	display: inline-block;
-	width: 0.75rem;
-	height: 0.75rem;
-	border-radius: 50%;
+	display: flex;
+	align-items: center;
 	margin-right: 0.5rem;
+	font-size: 1.25rem;
 }
 
 .status-extra {
@@ -111,9 +112,19 @@ h1 {
 	font-size: 0.9rem;
 }
 .status-text {
-	font-size: 0.875rem;
-	font-weight: 500;
+	font-size: 0.8rem;
+	font-weight: 600;
+	white-space: nowrap;
 }
+
+
+.status-emoji {
+    font-size: 1.25rem;
+    margin-right: 0.5rem;
+    display: inline-block;
+    transform: translateY(1px);
+}
+
 .status-operational {
 	color: var(--color-operational);
 }
@@ -125,19 +136,6 @@ h1 {
 }
 .status-unknown {
 	color: var(--color-neutral);
-}
-
-.indicator-operational {
-	background-color: var(--color-operational);
-}
-.indicator-partial\\ Outage {
-	background-color: var(--color-partial);
-}
-.indicator-outage {
-	background-color: var(--color-outage);
-}
-.indicator-unknown {
-	background-color: var(--color-neutral);
 }
 
 .status-details {

@@ -34,20 +34,6 @@ async function fetchServices() {
     }
 }
 
-function getStatusColor(status) {
-    console.log(status)
-    switch (status) {
-        case 'operational':
-            return 'var(--color-operational)';
-        case 'partial':
-            return 'var(--color-partial)';
-        case 'outage':
-            return 'var(--color-outage)';
-        default:
-            return 'var(--color-neutral)';
-    }
-}
-
 function formatDateOnly(date) {
     const d = new Date(date);
     return d.toLocaleDateString(undefined, {
@@ -93,10 +79,22 @@ function renderStatusCards(services) {
     });
 }
 
+function getStatusIcon(status) {
+    switch (status) {
+        case 'operational': return '✅';
+        case 'partial': return '🟠';
+        case 'outage': return '❌';
+        default: return '❓';
+    }
+}
+
+
 function showServiceDetails(service) {
     document.getElementById('modal-title').textContent = service.name;
     document.getElementById('modal-status-message').textContent = service.details;
-    document.getElementById('modal-indicator').className = 'status-indicator indicator-' + service.status;
+    const indicator = document.getElementById('modal-indicator');
+    indicator.innerHTML = `<span class="status-emoji">${getStatusIcon(service.status)}</span>`;
+
 
     const timeline = document.getElementById('modal-timeline');
     timeline.innerHTML = '';
@@ -104,9 +102,11 @@ function showServiceDetails(service) {
     service.timeline.forEach(item => {
         const el = document.createElement('div');
         el.className = 'timeline-item';
-        const iconColor = getStatusColor(item.status);
+
+        const icon = getStatusIcon(item.status);
+
         el.innerHTML = `
-            <div class="timeline-icon" style="background-color: ${iconColor}"></div>
+            <div class="timeline-icon" style="font-size: 1rem;">${icon}</div>
             <div class="timeline-content">
                 <div class="timeline-time">${formatDateOnly(item.time)}</div>
                 <div class="timeline-text">${item.text}</div>
@@ -117,6 +117,7 @@ function showServiceDetails(service) {
 
     document.getElementById('modal-backdrop').classList.add('active');
 }
+
 
 document.getElementById('modal-close').onclick = () => {
     document.getElementById('modal-backdrop').classList.remove('active');
