@@ -20,7 +20,7 @@ async function fetchServices() {
 
             // Count both full and partial outages
             service.totalOutages = service.timeline.filter(t =>
-                t.status === 'Outage' || t.status === 'Partial Outage'
+                t.status === 'outage' || t.status === 'partial'
             ).length;
 
             service.lastIncident = getLastIncident(service.timeline);
