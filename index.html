@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>PMO Service Status Dashboard</title>
+    <title>What’s working and what’s not?</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/x-icon" href="./images/icon.png">
 
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>PMO Service Status Dashboard</h1>
-            <p class="subtitle">Monitor the operational status of all PMO services</p>
-            <p class="last-updated">Last updated: <span id="update-time">...</span></p>
-        </header>
+        <header class="dashboard-header">
+  <div class="header-top">
+    <img src="images/notino-logo.png" alt="Notino Logo" class="logo" />
+    <h1>PMO Service Status Dashboard</h1>
+  </div>
+  <p class="subtitle">Monitor the operational status of all PMO services</p>
+  <p class="last-updated">Last updated: <span id="update-time">...</span></p>
+</header>
         <div class="status-grid" id="status-grid"></div>
     </div>
 
