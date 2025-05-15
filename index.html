@@ -1,49 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>What’s working and what’s not?</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/x-icon" href="./images/icon.png">
 
 </head>
+
 <body>
     <div class="container">
         <header class="dashboard-header">
-  <div class="header-top">
-    <img src="images/notino-logo.png" alt="Notino Logo" class="logo" />
-    <h1>PMO Service Status Dashboard</h1>
-  </div>
-  <p class="subtitle">Monitor the operational status of all PMO services</p>
-  <p class="last-updated">Last updated: <span id="update-time">...</span></p>
-</header>
+            <div class="header-top">
+                <img src="images/notino-logo.png" alt="Notino Logo" class="logo" />
+                <h1>PMO Service Status Dashboard</h1>
+            </div>
+            <p class="subtitle">Monitor the operational status of all PMO services</p>
+            <p class="last-updated">Last updated: <span id="update-time">...</span></p>
+        </header>
         <div class="status-grid" id="status-grid"></div>
     </div>
 
     <!-- Modal -->
     <div class="modal-backdrop" id="modal-backdrop">
-    <div class="modal">
-        <div class="modal-header">
-            <div class="modal-title">
-                <span class="status-indicator" id="modal-indicator"></span>
-                <span id="modal-title">Service Name</span>
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span class="status-indicator" id="modal-indicator"></span>
+                    <span id="modal-title">Service Name</span>
+                </div>
+                <button class="modal-close" id="modal-close">✕</button>
             </div>
-            <button class="modal-close" id="modal-close">✕</button>
-        </div>
-        <div class="modal-body">
-            <div class="modal-section">
-                <div class="modal-section-title">Description</div>
-                <p id="modal-status-message"></p>
-            </div>
-            <div class="modal-section">
-                <div class="modal-section-title">Recent Activity</div>
-                <div class="timeline" id="modal-timeline"></div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <div class="modal-section-title">Description</div>
+                    <p id="modal-status-message"></p>
+                </div>
+                <div class="modal-section">
+                    <div class="modal-section-title">Recent Activity</div>
+                    <div class="timeline" id="modal-timeline"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <script src="app.js"></script>
 </body>
+
 </html>
