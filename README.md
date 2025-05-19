@@ -58,7 +58,7 @@ Update ```sheetID``` in ```app.js```.
 
 | Column       | Type  | Notes / example                                    |
 |--------------|-------|----------------------------------------------------|
-| `id`         | int   | Primary key, e.g. `1`                              |
+| `id`         | str   | Primary key, e.g. `1`                              |
 | `name`       | str   | Human-friendly name, e.g. `Jira`                   |
 | `status`     | str   | `operational` \| `partial` \| `outage`             |
 | `statusText` | str   | Short one-liner, e.g. `All good`                   |
@@ -70,7 +70,7 @@ Update ```sheetID``` in ```app.js```.
 
 | Column       | Type  | Notes / example                    |
 |--------------|-------|------------------------------------|
-| `serviceId`  | int   | FK ↗️ points to `Services.id`       |
+| `serviceId`  | str   | FK ↗️ points to `Services.id`       |
 | `status`     | str   | Same enum: `operational/partial/outage` |
 | `text`       | str   | What went down, e.g. `API 502 errors`  |
 | `time`       | date  | ISO/locale-parseable, e.g. `2025-05-01 08:12` |
