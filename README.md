@@ -18,15 +18,17 @@
 ---
 
 ## 📂 Project layout
+```
 .
 ├── index.html # Main markup
 ├── styles.css # Tailwind-inspired custom styles
 ├── app.js # All the JS logic
 ├── images/
 │ ├── notino-logo.png
+│ ├── dashboard-preview.png
 │ └── icon.png
 └── README.md # ← you’re here
-
+```
 ---
 
 ## 🚀 Quick-start
